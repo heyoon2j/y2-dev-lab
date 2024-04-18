@@ -1,0 +1,36 @@
+import holidays
+from enum import Enum
+
+# 국가 열거형 정의
+class Country(Enum):
+    KOREA = 'korea'
+    USA = 'usa'
+
+# 각 국가에 대한 휴일 클래스 매핑
+country_holiday_classes = {
+    Country.KOREA: holidays.Korea,
+    Country.USA: holidays.US,
+    # 여기에 다른 국가의 휴무일 정보를 추가할 수 있습니다.
+}
+
+# 국가와 연도를 입력으로 받아 해당 국가의 휴무일을 가져오는 함수
+def get_holidays(country, year):
+    if country in country_holiday_classes:
+        return country_holiday_classes[country](years=year)
+    else:
+        return None
+
+# 국가와 연도를 입력 받고 휴무일을 출력하는 함수
+def print_holidays(country, year):
+    country = Country(country.lower())
+    country_holidays = get_holidays(country, year)
+    if country_holidays:
+        print(f"{year}년 {country.value}의 휴무일:")
+        for date, name in sorted(country_holidays.items()):
+            print(date, name)
+    else:
+        print("해당 국가의 휴무일 정보를 찾을 수 없습니다.")
+
+# 테스트를 위한 예시
+print_holidays('korea', 2024)  # 한국의 휴무일 출력
+print_holidays('usa', 2024)    # 미국의 휴무일 출력
