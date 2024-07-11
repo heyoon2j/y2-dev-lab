@@ -2,10 +2,11 @@ from .aws_credential import AWSCredential
 import boto3
 
 class AWSClient:
-    def __init__(self, service_name=None, region_name=None, iam_role_arn=None, aws_access_key_id=None, aws_secret_access_key=None, profile_name=None):
+    def __init__(self, service_name=None, region_name=None, iam_role_arn=None, aws_access_key_id=None, aws_secret_access_key=None, aws_session_token=None, profile_name=None):
         self.service_name = service_name
         self.credentials = None
         self.client = None
+        self.aws_session_token = None
         #self.region_name = region_name
         
         # 자격 증명 초기화
@@ -27,7 +28,7 @@ class AWSClient:
     def create_client(self, region_name):#, service_name=None):
         return boto3.client(
             service_name=self.service_name,
-            region_name=self.region_name,
+            region_name=region_name,
             **self.credentials
         )
     
