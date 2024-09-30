@@ -2,7 +2,7 @@ from .aws_credential import AWSCredential
 import boto3
 
 class AWSClient:
-    def __init__(self, service_name=None, region_name=None, iam_role_arn=None, aws_access_key_id=None, aws_secret_access_key=None, aws_session_token=None, profile_name=None):
+    def __init__(self, service_name=None, region_name=None, iam_role_arn=None, aws_access_key_id=None, aws_secret_access_key=None, aws_session_token=None, profile_name=None, default=None):
         self.service_name = service_name
         self.credentials = None
         self.client = None
@@ -19,6 +19,8 @@ class AWSClient:
         # 3) Profile 사용하는 경우
         elif profile_name:
             self.credentials = AWSCredential.get_profile_credentials(profile_name)
+        elif default:
+            self.credentials = {}
         else:
             raise ValueError("IAM 역할 또는 자격 증명을 제공해야 합니다.")
 

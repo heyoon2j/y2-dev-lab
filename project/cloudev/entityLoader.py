@@ -50,6 +50,7 @@ class EntityLoader:
 
 
     def get_entity(self):
+        # Get Module information
         if self.entity is None:
             self.entity = getattr(importlib.import_module(self.module_name), self.entity_name)
         return self.entity

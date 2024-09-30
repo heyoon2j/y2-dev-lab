@@ -4,8 +4,8 @@ from botocore.exceptions import ClientError
 class RDS(AWSClient):
     service_name = 'rds'
 
-    def __init__(self, region_name, service_name='rds', iam_role_arn=None, aws_access_key_id=None, aws_secret_access_key=None, profile_name=None):
-        super().__init__(RDS.service_name, region_name, iam_role_arn, aws_access_key_id, aws_secret_access_key, profile_name)
+    def __init__(self, region_name=None, iam_role_arn=None, aws_access_key_id=None, aws_secret_access_key=None, aws_session_token=None, profile_name=None, default=None):
+        super().__init__(RDS.service_name ,region_name=region_name, iam_role_arn=iam_role_arn, aws_access_key_id=aws_access_key_id, aws_secret_access_key=aws_secret_access_key, aws_session_token=aws_session_token, profile_name=profile_name, default=default)
 
 
     def start_db_instance(self, db_instance_identifier):
@@ -34,16 +34,29 @@ class RDS(AWSClient):
         except Exception as e:
             return None
 
+
     def describe_db_instances(self, filters=None):
         db_instances = []
         next_token = None
 
+        if filters is None:
+            filters = []
+
         while True:
-            response = self.client.describe_db_instances(
-                Filters=filters,
-                MaxRecords=100,  # 한 번에 반환할 최대 레코드 수
-                Marker=next_token
-            )
+            if next_token:
+                response = self.client.describe_db_instances(
+                    Filters=filters,
+                    NextToken=next_token
+                )
+            else:
+                response = self.client.describe_db_instances(
+                    Filters=filters
+                )
+            # response = self.client.describe_db_instances(
+            #     Filters=filters,
+            #     MaxRecords=100,  # 한 번에 반환할 최대 레코드 수
+            #     Marker=next_token
+            # )
 
             for db_instance in response['DBInstances']:
                 # Cluster에 포함된 리더 인스턴스와 라이터 인스턴스 제외

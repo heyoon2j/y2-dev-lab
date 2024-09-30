@@ -28,5 +28,7 @@ SERVICES : ServiceDict = {
     "efs": ("EFS", "FileStorage"),
     "vpc": ("VPC",),
     "network_firewall": ("NetworkFirewall",),
-    "tgw": ("TGW", "TransitGateway")    
+    "tgw": ("TGW", "TransitGateway"),
+    "aws_lambda": {"Lambda"},
+    "organizations": {"Organizations", "OU"}
 }
