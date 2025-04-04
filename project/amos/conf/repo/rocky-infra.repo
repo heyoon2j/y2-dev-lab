@@ -1,0 +1,5 @@
+[AppStream]
+name = Rocky Linux-$releasever - AppStream
+baseurl = http://repo.test.com/rocky/$releasever/AppStream/$basearch/os/
+gpgcheck=0
+enabled=1
